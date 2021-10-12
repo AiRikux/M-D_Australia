@@ -101,6 +101,7 @@ shinyServer(function(input, output){
     plot2
   })
   
+  # Average Marriage Count based on Marital Status 2008 - 2018
   output$plot3 <- renderPlot({
     ms$per <- bc$count/sum(ms$count)
     ms$label <- scales::percent(ms$per)
@@ -114,6 +115,7 @@ shinyServer(function(input, output){
     plot3
   })
   
+  # Marriage based on Celebrant 2008 - 2018
   output$plot4 <- renderPlot({
     plot4 <- ggplot(c, aes(year, count, fill = Description)) + 
       geom_bar(stat = "identity", position = "fill") + 
@@ -124,6 +126,7 @@ shinyServer(function(input, output){
     plot4
   })
   
+  # first abd remarriage
   output$plot5 <- renderPlot({
     if (input$type2 == 1) {
       plot5a <- ggplot(m1m, aes(`Age Range`, count, fill = Gender)) +
@@ -168,6 +171,7 @@ shinyServer(function(input, output){
     plot5a+plot5b
   })
   
+  # marriage by date
   output$plot6 <- renderPlot({
     doc1 <- doc %>% group_by(Date) %>%
       summarise(count = mean(count)) %>%
@@ -182,8 +186,12 @@ shinyServer(function(input, output){
     plot6
   })
   
+  # marriage by month
   output$plot7 <- renderPlot({
-    doc2 <- doc %>% group_by(Month) %>%
+    months <- c("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
+    doc2 <- arrange(transform(doc,
+                              Month=factor(Month,levels=months)),Month)
+    doc2 <- doc2 %>% group_by(Month) %>%
       summarise(count = mean(count)) %>%
       ungroup()
     
@@ -197,6 +205,7 @@ shinyServer(function(input, output){
     plot7
   })
   
+  # marriage by month
   output$plot8 <- renderPlot({
     months <- c("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
     doc3 <- arrange(transform(doc,
